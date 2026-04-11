@@ -57,4 +57,20 @@ public class RoomResource {
                 .entity(room)
                 .build();
     }
+
+    @DELETE
+    @Path("/{roomId}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response deleteRoom(@PathParam("roomId") String roomId) {
+        for (Room room : rooms) {
+            if (room.getId().equalsIgnoreCase(roomId)) {
+                rooms.remove(room);
+                return Response.ok("Room deleted successfully").build();
+            }
+        }
+
+        return Response.status(Response.Status.NOT_FOUND)
+                .entity("Room not found")
+                .build();
+    }
 }
