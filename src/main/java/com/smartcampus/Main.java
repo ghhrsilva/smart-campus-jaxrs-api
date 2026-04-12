@@ -15,6 +15,7 @@ public class Main {
         final ResourceConfig rc = new ResourceConfig();
         rc.register(DiscoveryResource.class);
         rc.register(com.smartcampus.resource.RoomResource.class);
+        rc.register(com.smartcampus.resource.SensorResource.class);
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
