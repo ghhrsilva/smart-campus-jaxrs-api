@@ -16,6 +16,7 @@ public class Main {
         rc.register(DiscoveryResource.class);
         rc.register(com.smartcampus.resource.RoomResource.class);
         rc.register(com.smartcampus.resource.SensorResource.class);
+        rc.register(com.smartcampus.resource.SensorReadingResource.class);
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
