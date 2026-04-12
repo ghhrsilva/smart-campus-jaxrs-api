@@ -1,5 +1,6 @@
 package com.smartcampus;
 
+import com.smartcampus.filter.LoggingFilter;
 import com.smartcampus.exception.mapper.SensorMaintenanceExceptionMapper;
 import com.smartcampus.exception.mapper.InvalidRoomExceptionMapper;
 import com.smartcampus.exception.mapper.RoomNotEmptyExceptionMapper;
@@ -24,6 +25,7 @@ public class Main {
         rc.register(InvalidRoomExceptionMapper.class);
         rc.register(SensorMaintenanceExceptionMapper.class);
         rc.register(com.smartcampus.exception.mapper.GlobalExceptionMapper.class);
+        rc.register(LoggingFilter.class);
 
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
