@@ -1,5 +1,6 @@
 package com.smartcampus.resource;
 
+import com.smartcampus.exception.SensorMaintenanceException;
 import com.smartcampus.model.Sensor;
 import com.smartcampus.model.SensorReading;
 import com.smartcampus.store.DataStore;
@@ -33,10 +34,13 @@ public class SensorReadingResource {
         for (Sensor sensor : DataStore.sensors) {
             if (sensor.getId().equalsIgnoreCase(sensorId)) {
 
+                if ("MAINTENANCE".equalsIgnoreCase(sensor.getStatus())) {
+                    throw new SensorMaintenanceException("Sensor is under maintenance");
+                }
+
                 reading.setTimestamp(System.currentTimeMillis());
                 sensor.getReadings().add(reading);
 
-                // coursework side effect: update current sensor value
                 sensor.setCurrentValue(reading.getValue());
 
                 return Response.status(Response.Status.CREATED)

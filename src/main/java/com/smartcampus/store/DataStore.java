@@ -20,6 +20,5 @@ public class DataStore {
         rooms.add(room2);
 
         sensors.add(new Sensor("TEMP-001", "Temperature", "ACTIVE", 24.5, "LIB-301"));
-        sensors.add(new Sensor("CO2-001", "CO2", "ACTIVE", 420.0, "ENG-102"));
-    }
+        sensors.add(new Sensor("CO2-001", "CO2", "MAINTENANCE", 420.0, "ENG-102"));    }
 }
