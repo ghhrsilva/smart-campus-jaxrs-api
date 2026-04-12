@@ -1,44 +1,27 @@
 package com.smartcampus.resource;
 
 import com.smartcampus.model.Room;
+import com.smartcampus.store.DataStore;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("/rooms")
 public class RoomResource {
 
-    private static final List<Room> rooms = new ArrayList<>();
-
-//    static {
-//        rooms.add(new Room("LIB-301", "Library Quiet Study", 40));
-//        rooms.add(new Room("ENG-102", "Engineering Lab", 25));
-//    }
-
-    static {
-        Room room1 = new Room("LIB-301", "Library Quiet Study", 40);
-        room1.getSensorIds().add("TEMP-001");
-
-        Room room2 = new Room("ENG-102", "Engineering Lab", 25);
-
-        rooms.add(room1);
-        rooms.add(room2);
-    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Room> getRooms() {
-        return rooms;
+        return DataStore.rooms;
     }
 
     @GET
     @Path("/{roomId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRoomById(@PathParam("roomId") String roomId) {
-        for (Room room : rooms) {
+        for (Room room : DataStore.rooms) {
             if (room.getId().equalsIgnoreCase(roomId)) {
                 return Response.ok(room).build();
             }
@@ -53,7 +36,7 @@ public class RoomResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createRoom(Room room) {
-        for (Room existingRoom : rooms) {
+        for (Room existingRoom : DataStore.rooms) {
             if (existingRoom.getId().equalsIgnoreCase(room.getId())) {
                 return Response.status(Response.Status.CONFLICT)
                         .entity("Room with this ID already exists")
@@ -61,7 +44,7 @@ public class RoomResource {
             }
         }
 
-        rooms.add(room);
+        DataStore.rooms.add(room);
 
         return Response.status(Response.Status.CREATED)
                 .entity(room)
@@ -72,7 +55,7 @@ public class RoomResource {
     @Path("/{roomId}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteRoom(@PathParam("roomId") String roomId) {
-        for (Room room : rooms) {
+        for (Room room : DataStore.rooms) {
             if (room.getId().equalsIgnoreCase(roomId)) {
 
                 if (room.getSensorIds() != null && !room.getSensorIds().isEmpty()) {
@@ -81,7 +64,7 @@ public class RoomResource {
                             .build();
                 }
 
-                rooms.remove(room);
+                DataStore.rooms.remove(room);
                 return Response.ok("Room deleted successfully").build();
             }
         }
