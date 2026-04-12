@@ -23,7 +23,7 @@ public class Main {
         rc.register(RoomNotEmptyExceptionMapper.class);
         rc.register(InvalidRoomExceptionMapper.class);
         rc.register(SensorMaintenanceExceptionMapper.class);
-
+        rc.register(com.smartcampus.exception.mapper.GlobalExceptionMapper.class);
 
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
