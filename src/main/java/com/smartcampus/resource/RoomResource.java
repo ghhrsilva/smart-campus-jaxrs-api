@@ -13,9 +13,19 @@ public class RoomResource {
 
     private static final List<Room> rooms = new ArrayList<>();
 
+//    static {
+//        rooms.add(new Room("LIB-301", "Library Quiet Study", 40));
+//        rooms.add(new Room("ENG-102", "Engineering Lab", 25));
+//    }
+
     static {
-        rooms.add(new Room("LIB-301", "Library Quiet Study", 40));
-        rooms.add(new Room("ENG-102", "Engineering Lab", 25));
+        Room room1 = new Room("LIB-301", "Library Quiet Study", 40);
+        room1.getSensorIds().add("TEMP-001");
+
+        Room room2 = new Room("ENG-102", "Engineering Lab", 25);
+
+        rooms.add(room1);
+        rooms.add(room2);
     }
 
     @GET
@@ -64,6 +74,13 @@ public class RoomResource {
     public Response deleteRoom(@PathParam("roomId") String roomId) {
         for (Room room : rooms) {
             if (room.getId().equalsIgnoreCase(roomId)) {
+
+                if (room.getSensorIds() != null && !room.getSensorIds().isEmpty()) {
+                    return Response.status(Response.Status.CONFLICT)
+                            .entity("Room cannot be deleted: sensors still assigned")
+                            .build();
+                }
+
                 rooms.remove(room);
                 return Response.ok("Room deleted successfully").build();
             }
