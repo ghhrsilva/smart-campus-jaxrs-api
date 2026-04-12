@@ -7,6 +7,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/sensors")
@@ -14,8 +15,21 @@ public class SensorResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Sensor> getSensors() {
-        return DataStore.sensors;
+    public List<Sensor> getSensors(@QueryParam("type") String type) {
+
+        if (type == null || type.isBlank()) {
+            return DataStore.sensors;
+        }
+
+        List<Sensor> filteredSensors = new ArrayList<>();
+
+        for (Sensor sensor : DataStore.sensors) {
+            if (sensor.getType().equalsIgnoreCase(type)) {
+                filteredSensors.add(sensor);
+            }
+        }
+
+        return filteredSensors;
     }
 
     @POST
