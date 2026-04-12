@@ -1,5 +1,6 @@
 package com.smartcampus.resource;
 
+import com.smartcampus.exception.InvalidRoomException;
 import com.smartcampus.model.Room;
 import com.smartcampus.model.Sensor;
 import com.smartcampus.store.DataStore;
@@ -54,9 +55,7 @@ public class SensorResource {
         }
 
         if (matchedRoom == null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Invalid roomId: room does not exist")
-                    .build();
+            throw new InvalidRoomException("Invalid roomId: room does not exist");
         }
 
         DataStore.sensors.add(sensor);

@@ -1,5 +1,6 @@
 package com.smartcampus;
 
+import com.smartcampus.exception.mapper.InvalidRoomExceptionMapper;
 import com.smartcampus.exception.mapper.RoomNotEmptyExceptionMapper;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -19,6 +20,8 @@ public class Main {
         rc.register(com.smartcampus.resource.SensorResource.class);
         rc.register(com.smartcampus.resource.SensorReadingResource.class);
         rc.register(RoomNotEmptyExceptionMapper.class);
+        rc.register(InvalidRoomExceptionMapper.class);
+
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
