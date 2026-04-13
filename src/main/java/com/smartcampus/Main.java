@@ -20,7 +20,8 @@ public class Main {
         rc.register(DiscoveryResource.class);
         rc.register(com.smartcampus.resource.RoomResource.class);
         rc.register(com.smartcampus.resource.SensorResource.class);
-        rc.register(com.smartcampus.resource.SensorReadingResource.class);
+        // SensorReadingResource is NOT registered here —
+        // it is a sub-resource reached via SensorResource's locator method.
         rc.register(RoomNotEmptyExceptionMapper.class);
         rc.register(InvalidRoomExceptionMapper.class);
         rc.register(SensorMaintenanceExceptionMapper.class);

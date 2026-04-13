@@ -15,10 +15,12 @@ public class DataStore {
         room1.getSensorIds().add("TEMP-001");
 
         Room room2 = new Room("ENG-102", "Engineering Lab", 25);
+        room2.getSensorIds().add("CO2-001");   // fixed: CO2-001 is in ENG-102
 
         rooms.add(room1);
         rooms.add(room2);
 
         sensors.add(new Sensor("TEMP-001", "Temperature", "ACTIVE", 24.5, "LIB-301"));
-        sensors.add(new Sensor("CO2-001", "CO2", "MAINTENANCE", 420.0, "ENG-102"));    }
+        sensors.add(new Sensor("CO2-001", "CO2", "MAINTENANCE", 420.0, "ENG-102"));
+    }
 }

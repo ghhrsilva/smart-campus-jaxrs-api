@@ -38,6 +38,13 @@ public class SensorResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createSensor(Sensor sensor) {
 
+        // Null guard — prevents NullPointerException on malformed body
+        if (sensor.getId() == null || sensor.getId().isBlank()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Sensor ID is required")
+                    .build();
+        }
+
         for (Sensor existingSensor : DataStore.sensors) {
             if (existingSensor.getId().equalsIgnoreCase(sensor.getId())) {
                 return Response.status(Response.Status.CONFLICT)
@@ -64,5 +71,14 @@ public class SensorResource {
         return Response.status(Response.Status.CREATED)
                 .entity(sensor)
                 .build();
+    }
+
+    // ---------------------------------------------------------------
+    // Sub-Resource Locator (Part 4 — required pattern)
+    // Delegates /sensors/{sensorId}/readings to SensorReadingResource
+    // ---------------------------------------------------------------
+    @Path("/{sensorId}/readings")
+    public SensorReadingResource getReadingResource(@PathParam("sensorId") String sensorId) {
+        return new SensorReadingResource(sensorId);
     }
 }

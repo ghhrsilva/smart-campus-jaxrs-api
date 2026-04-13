@@ -37,6 +37,14 @@ public class RoomResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createRoom(Room room) {
+
+        // Null guard — prevents NullPointerException on malformed body
+        if (room.getId() == null || room.getId().isBlank()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Room ID is required")
+                    .build();
+        }
+
         for (Room existingRoom : DataStore.rooms) {
             if (existingRoom.getId().equalsIgnoreCase(room.getId())) {
                 return Response.status(Response.Status.CONFLICT)

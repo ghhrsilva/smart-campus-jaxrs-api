@@ -9,13 +9,21 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.UUID;
 
-@Path("/sensors/{sensorId}/readings")
+// NOTE: No class-level @Path here — this is a Sub-Resource class.
+// It is reached via the locator method in SensorResource.
 public class SensorReadingResource {
+
+    private final String sensorId;
+
+    public SensorReadingResource(String sensorId) {
+        this.sensorId = sensorId;
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getReadings(@PathParam("sensorId") String sensorId) {
+    public Response getReadings() {
         for (Sensor sensor : DataStore.sensors) {
             if (sensor.getId().equalsIgnoreCase(sensorId)) {
                 return Response.ok(sensor.getReadings()).build();
@@ -30,7 +38,7 @@ public class SensorReadingResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addReading(@PathParam("sensorId") String sensorId, SensorReading reading) {
+    public Response addReading(SensorReading reading) {
         for (Sensor sensor : DataStore.sensors) {
             if (sensor.getId().equalsIgnoreCase(sensorId)) {
 
@@ -38,9 +46,13 @@ public class SensorReadingResource {
                     throw new SensorMaintenanceException("Sensor is under maintenance");
                 }
 
+                // Auto-generate UUID if client did not supply one
+                if (reading.getId() == null || reading.getId().isBlank()) {
+                    reading.setId(UUID.randomUUID().toString());
+                }
+
                 reading.setTimestamp(System.currentTimeMillis());
                 sensor.getReadings().add(reading);
-
                 sensor.setCurrentValue(reading.getValue());
 
                 return Response.status(Response.Status.CREATED)
