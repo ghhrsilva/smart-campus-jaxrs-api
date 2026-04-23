@@ -104,4 +104,4 @@ Use these commands to verify the core functionality and business logic constrain
 **Answer:** Filters centralize logging logic, applying it universally to all requests and responses. This eliminates code duplication, ensuring consistent observability across all endpoints, and allows us to modify the logging format in one single file.
 
 ---
-*Developed for 5COSC022W: Client-Server Architectures (2025/26)*
+*Developed for 5COSC022W: Client-Server Architecture CourseWork (2025/26)*
